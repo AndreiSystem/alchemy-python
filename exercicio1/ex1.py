@@ -41,6 +41,7 @@ class Dao:
     Session.configure(bind=engine)
     session = Session()
 
+# ----- Listando todos os dados da tabela
     def listar(self):
         papeis = self.session.query(Papel).all()
 
@@ -48,17 +49,32 @@ class Dao:
         for p in papeis:
             print(f'\t{p}')
 
+# ----- Filtrando por codigo
     def filtrar_por_codigo(self, codigo):
         papel = self.session.query(Papel).filter_by(
             codigo=f'{codigo}').first()
 
         print(f'\n{30*"="} Linhas conforme codigo{30*"="}')
         print(f'\t{papel}')
+# ----- Buscando o dado pelo id
 
     def buscar_por_id(self, id):
         papel_id = self.session.query(Papel).filter_by(id=f'{id}').first()
 
         print(f'\n{30*"="} Linha conforme Id{30*"="}')
         print(f'\t{papel_id}')
+# ----- Listando os ultimos dez da tabela
 
-    # ----- Gerando a sessao para realizar as consultas à base de dados
+    def listar_os_ultimos_dez(self):
+        ultimos = self.session.query(Papel).order_by(
+            Papel.id.desc()).limit(10).all()
+
+        for p in ultimos:
+            print(f'\t{p}')
+
+
+# ----- Instanciando o objeto da Classe Dao
+start = Dao()
+
+
+start.listar_os_ultimos_dez()
